@@ -30,4 +30,4 @@ jobs:
       # Hello from AWS: WhoAmI
       - name: Sts GetCallerIdentity
         run: |
-          cat ./index.html # aws s3 cp ./index.html s3://github-actions-test-bucket-123578 --recursive
+          aws s3 cp ./index.html s3://github-actions-test-bucket-123578
