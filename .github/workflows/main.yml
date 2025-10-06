@@ -6,6 +6,6 @@ permissions:
   id-token: write
 jobs:
   cli:
-    uses: Yharnix/ci/.github/workflows/main.yml
+    uses: Yharnix/ci/.github/workflows/main.yml@master
     with:
       plan: auto
