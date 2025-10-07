@@ -5,8 +5,12 @@ on:
 permissions:
   contents: read
   id-token: write
-
 jobs:
+  debug_oidc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug OIDC token
+        uses: github/actions-oidc-debugger@v1 # Use the appropriate version
   cli:
       uses: Yharnix/ci/.github/workflows/main.yml@master
       with:
