@@ -1,5 +1,7 @@
 name: Provison
 on: [push]
+permissions:
+  id-token: write
 jobs:
   exchange:
     runs-on: ubuntu-latest
