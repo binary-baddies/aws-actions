@@ -7,10 +7,6 @@ permissions:
   id-token: write
 
 jobs:
-  debug:
-    steps:
-      - uses: actions/checkout@v4
-      - uses: github/actions-oidc-debugger@v1
   cli:
       uses: Yharnix/ci/.github/workflows/main.yml@master
       with:
