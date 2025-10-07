@@ -1,24 +1,12 @@
-name: Test Debugger Action
-permissions:
-  contents: read
-  id-token: write
-on: 
-  push:
-  workflow_dispatch:
-
+name: Provison
+on: [push]
 jobs:
-  cli:
-      uses: Yharnix/ci/.github/workflows/main.yml@master
-      with:
-        plan: auto
-  oidc_debug_test:
-    permissions:
-      contents: read
-      id-token: write
+  exchange:
     runs-on: ubuntu-latest
-    name: A test of the oidc debugger
     steps:
-      - name: Debug OIDC Claims
-        uses: steve-todorov/oidc-debugger-action@v1
-        with:
-          audience: '${{ github.server_url }}/${{ github.repository }}'
+    - name: OIDC
+      id: oidc
+      run: |
+        token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN"\
+        "$ACTIONS_ID_TOKEN_REQUEST_URL$audience=sts.amazon.com")
+        echo $token
