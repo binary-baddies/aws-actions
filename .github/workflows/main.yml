@@ -7,7 +7,6 @@ permissions:
   id-token: write
 jobs:
   cli:
-    - uses: github/actions-oidc-debugger@v1
-    - uses: Yharnix/ci/.github/workflows/main.yml@master
+      uses: Yharnix/ci/.github/workflows/main.yml@master
       with:
         plan: auto
