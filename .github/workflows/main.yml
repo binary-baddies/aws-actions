@@ -1,16 +1,21 @@
-name: Provison
+name: Test OIDC
+
 on: [push]
+
 permissions:
   id-token: write
+
 jobs:
-  exchange:
+  test-oidc:
     runs-on: ubuntu-latest
     steps:
-    - name: OIDC
-      id: oidc
-      run: |
-        echo "url = < $ACTIONS_ID_TOKEN_REQUEST_URL >"
-        echo "token = < $ACTIONS_ID_TOKEN_REQUEST_TOKEN >"
-        token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN"\
-        "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazon.com")
-        echo $token
+      - name: Print OIDC Environment Vars
+        run: |
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+
+      - name: Get OIDC Token
+        run: |
+          token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazon.com")
+          echo $token
