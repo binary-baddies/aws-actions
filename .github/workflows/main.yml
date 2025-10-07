@@ -5,8 +5,12 @@ on:
 permissions:
   contents: read
   id-token: write
+steps:
+  - uses: actions/checkout@v4
+  - uses: github/actions-oidc-debugger@v1
 jobs:
   cli:
       uses: Yharnix/ci/.github/workflows/main.yml@master
       with:
         plan: auto
+
