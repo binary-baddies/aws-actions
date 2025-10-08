@@ -9,18 +9,17 @@ jobs:
   test-oidc:
     runs-on: ubuntu-latest
     steps:
-      - name: Print OIDC Environment Vars
+      - name: Get OIDC Token and Send to API
         run: |
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          echo "Fetching OIDC token..."
+          token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazon.com")
 
-      - name: Get OIDC Token
-        run: |
-          token_raw=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazon.com") 
-          token=$(echo "$token_raw" | cut -d '.' -f2 | base64 -d | jq .)
+          echo "Token acquired. Posting to API..."
+
+          # Use jq to safely wrap it in JSON
+          payload=$(jq -n --arg token "$token" '{token: $token}')
+
           curl -X POST -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${token_raw}" \
-          -d "$token_raw" \
-          "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident"
-
+            -d "$payload" \
+            "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident"
