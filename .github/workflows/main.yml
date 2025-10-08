@@ -21,6 +21,6 @@ jobs:
           echo "$token"
           curl -X POST -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${token}" \
-          -d "{"token":"$token"}" \
+          -d "{\"token\":\"$token\"}" \
           "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident"
 
