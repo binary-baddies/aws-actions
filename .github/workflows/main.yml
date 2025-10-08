@@ -13,7 +13,7 @@ jobs:
         run: |
           echo "Fetching OIDC token..."
           token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazon.com")
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
 
           echo "Token acquired. Posting to API..."
 
