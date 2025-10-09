@@ -33,5 +33,17 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_ENV
           echo "AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN" >> $GITHUB_ENV
+      - name: Verify credentials with AWS CLI
+        run: |
+          echo "Configuring AWS CLI with temporary credentials..."
+          
+          # Export the credentials explicitly to the environment
+          export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+          export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+          export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 
+          # Verify credentials by calling AWS CLI (e.g., getting caller identity)
+          aws sts get-caller-identity --output json
+
+          # Optional: Run other AWS CLI commands
           aws s3 ls
