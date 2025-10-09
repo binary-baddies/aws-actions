@@ -1,16 +1,15 @@
 on:
   [push]
+permissions:
+  id-token: write
 jobs:
   auth-and-run:
+    uses: Yharnix/ci/.github/workflows/issue_credentials.yml@master
+    with:
+      workflow_ref: '$GITHUB_WORFLOW'
+  test_creds:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-
     steps:
-      - uses: Yharnix/ci/.github/workflows/issue_credentials.yml@master
-        with:
-          workflow_ref: '$GITHUB_WORFLOW'
-
       - name: Run AWS CLI commands
         run: |
           aws sts get-caller-identity
