@@ -7,7 +7,7 @@ jobs:
       id-token: write
 
     steps:
-      - uses: Yharnix/ci/issue_credentials@master
+      - uses: Yharnix/ci/issue_credentials.yml@master
         with:
           workflow_ref: '$GITHUB_WORFLOW'
 
