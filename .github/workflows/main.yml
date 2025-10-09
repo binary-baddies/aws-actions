@@ -17,6 +17,6 @@ jobs:
     steps:
       - name: Run AWS CLI commands
         run: |
-          echo "oh yeah"
+          echo "oh yeah $AWS_SECRET_KEY_ID"
           aws sts get-caller-identity
           aws s3 ls
