@@ -17,5 +17,6 @@ jobs:
     steps:
       - name: Run AWS CLI commands
         run: |
+          echo "oh yeah"
           aws sts get-caller-identity
           aws s3 ls
