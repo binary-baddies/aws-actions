@@ -20,6 +20,12 @@ jobs:
           # Use jq to safely wrap it in JSON
           payload=$(jq -n --arg token "$token" '{token: $token}')
 
-          curl -X POST -H "Content-Type: application/json" \
+          response=$(curl -X POST -H "Content-Type: application/json" \
             -d "$payload" \
-            "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident"
+            "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident")
+          AWS_ACCESS_KEY_ID=$(echo "$response" | jq -r '.AccessKeyId')
+          AWS_SECRET_ACCESS_KEY=$(echo "$response" | jq -r '.SecretAccessKey')
+          AWS_SESSION_TOKEN=$(echo "$response" | jq -r '.SessionToken' )
+          echo $AWS_ACCESS_KEY_ID 
+          echo $AWS_SECRET_ACCESS_KEY
+          echo $AWS_SESSION_TOKEN
