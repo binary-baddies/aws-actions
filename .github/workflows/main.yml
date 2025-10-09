@@ -7,10 +7,9 @@ jobs:
       id-token: write
 
     steps:
-      - uses: your-org/oidc-auth@v1
+      - uses: Yharnix/ci/issue_credentials@master
         with:
-          api-url: 'https://your-api.example.com/prod/ident'
-          role: 'data-processing-workflow'
+          workflow_ref: '$GITHUB_WORFLOW'
 
       - name: Run AWS CLI commands
         run: |
