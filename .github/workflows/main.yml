@@ -1,49 +1,18 @@
-name: Test OIDC
-
-on: [push]
-
-permissions:
-  id-token: write
-
+on:
+  [push]
 jobs:
-  test-oidc:
+  auth-and-run:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
     steps:
-      - name: Get OIDC Token and Send to API
+      - uses: your-org/oidc-auth@v1
+        with:
+          api-url: 'https://your-api.example.com/prod/ident'
+          role: 'data-processing-workflow'
+
+      - name: Run AWS CLI commands
         run: |
-          echo "Fetching OIDC token..."
-          token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
-
-          echo "Token acquired. Posting to API..."
-
-          # Use jq to safely wrap it in JSON
-          payload=$(jq -n --arg token "$token" '{token: $token}')
-
-          response=$(curl -X POST -H "Content-Type: application/json" \
-            -d "$payload" \
-            "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod/ident")
-          AWS_ACCESS_KEY_ID=$(echo "$response" | jq -r '.AccessKeyId')
-          AWS_SECRET_ACCESS_KEY=$(echo "$response" | jq -r '.SecretAccessKey')
-          AWS_SESSION_TOKEN=$(echo "$response" | jq -r '.SessionToken' )
-          echo $AWS_ACCESS_KEY_ID 
-          echo $AWS_SECRET_ACCESS_KEY
-          echo $AWS_SESSION_TOKEN
-
-          echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_ENV
-          echo "AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN" >> $GITHUB_ENV
-      - name: Verify credentials with AWS CLI
-        run: |
-          echo "Configuring AWS CLI with temporary credentials..."
-          
-          # Export the credentials explicitly to the environment
-          export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-          export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-          export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
-
-          # Verify credentials by calling AWS CLI (e.g., getting caller identity)
-          aws sts get-caller-identity --output json
-
-          # Optional: Run other AWS CLI commands
+          aws sts get-caller-identity
           aws s3 ls
