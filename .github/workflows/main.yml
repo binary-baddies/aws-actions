@@ -8,6 +8,7 @@ jobs:
     with:
       workflow_ref: '$GITHUB_WORFLOW'
   test_creds:
+    needs: auth-and-run
     runs-on: ubuntu-latest
     steps:
       - name: Run AWS CLI commands
